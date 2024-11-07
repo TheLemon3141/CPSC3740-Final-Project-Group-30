@@ -1,6 +1,4 @@
 # CPSC3740-Final-Project-Group-30
-Implementing an interpreter for a subset of Racket... in Racket.
-
 //Below is the assignment description from Moodle, written by Howard Cheng
 
 CPSC 3740—Fall 2024
