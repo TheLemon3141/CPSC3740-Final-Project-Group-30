@@ -33,15 +33,20 @@
         [(list? expr)
             (apply (car expr) (cdr expr) env)]
         ;; Local binding
-        [(and (list? expr) (member (car expr) '(let letrec)))
-            (evalBinding expr env)]
+        ;[(and (list? expr) (member (car expr) '(let letrec)))
+            ;(evalBinding expr env)]
         ;; Else
         [else (error "Unknown expression: " expr)]))
 
-;; Lookup variable
+;; Erik's modified Lookup variable
 (define (lookup var env)
-    (let ((val (assoc var env)))
+    (let ([val (member var env)])
         (if val (cdr val) (error "Unknown variable: " var))))
+
+;; Dallin's OG Lookup variable
+;(define (lookup var env)
+;    (let ((val (assoc var env)))
+;        (if val (cdr val) (error "Unknown variable: " var))))
 
 ;; Arithmetic operators
 (define (evalArithmetic expr env)
@@ -128,10 +133,10 @@
 )
 
 ;; Test lambda
-(print
-    (startEval
-    '(letrec ((fact
-        (lambda (x)
-            (if (= x 0) (quote 1)
-                (* x (fact (= x 1)))))))
-                (fact 10))))
+;(print
+   ; (startEval
+   ; '(letrec ((fact
+   ;     (lambda (x)
+    ;        (if (= x 0) (quote 1)
+    ;            (* x (fact (= x 1)))))))
+    ;            (fact 10))))
