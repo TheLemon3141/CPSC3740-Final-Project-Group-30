@@ -10,7 +10,7 @@
             expr]
         ;; Variable
         [(symbol? expr)
-            (lookup env expr)]
+            (lookup expr env)]
         ;; Quoted
         [(and (list? expr) (eq? (car expr) 'quote)) 
             (second expr)]
@@ -105,33 +105,42 @@
         [else (error "Unknown function: " func)]))
 
 ;; Local binding
-
+(define (evalBinding func args)
+    ('"Not defined yet"
+))
 
 ;; Test arithmetic
-(print
-    (startEval '(+ 1 2))
-)
+;(print
+;    (startEval '(+ 1 2))
+;)
 
 ;; Test relational
-(print
-    (startEval '(= 1 1))
-)
+;(print
+;    (startEval '(= 1 1))
+;)
 
 ;; Test lists
-(print
-    (startEval '(cons 1 '()))
-)
+;(print
+;    (startEval '(cons 1 '()))
+;)
 
 ;; Test if
-(print
-    (startEval '(if (equal? 1 1) 1 2))
-)
+;(print
+;    (startEval '(if (equal? 1 1) 1 2))
+;)
 
 ;; Test lambda
+;(print
+   ;(startEval
+  ;  '(letrec ((fact
+    ;    (lambda (x)
+    ;        (if (= x 0) (quote 1)
+      ;          (* x (fact (= x 1)))))))
+      ;          (fact 10))))
+
+;; Test lambda eRIK'S TEST
 (print
-    (startEval
-    '(letrec ((fact
-        (lambda (x)
-            (if (= x 0) (quote 1)
-                (* x (fact (= x 1)))))))
-                (fact 10))))
+   (startEval
+    '(
+       (lambda (x y) (+ x y)) 10 20))
+       )
