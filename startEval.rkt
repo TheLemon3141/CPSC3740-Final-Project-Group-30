@@ -10,7 +10,7 @@
             expr]
         ;; Variable
         [(symbol? expr)
-            (lookup env expr)]
+            (lookup expr env)]
         ;; Quoted
         [(and (list? expr) (eq? (car expr) 'quote)) 
             (second expr)]
@@ -41,10 +41,9 @@
 ;; Erik's modified Lookup variable
 (define (lookup var env)
     (let* (
-           [dog (member 1 '())]
-           [val (car(member var env))]
+           [val (car(assoc var env))] ;if it's a pair
            )
-        (if val (cdr val) (error "Unknown variable: " var))) ;If val is a member, return its cdr. If mot, return unknown variable.
+        (if val (cdr val) (error "Unknown variable: " var))) ;If val is a member, return its cdr. If not, return "unknown variable."
   )
 
 ;; Dallin's OG Lookup variable
@@ -55,8 +54,8 @@
 ;; Arithmetic operators
 (define (evalArithmetic expr env)
     (let* ([op (car expr)]
-        [left (evalExpr (list-ref expr 1) env)]
-        [right (evalExpr (list-ref expr 2) env)])
+        [left (evalExpr (second expr) env)]
+        [right (evalExpr (third expr) env)])
     (case op
         [(+) (+ left right)]
         [(-) (- left right)]
@@ -100,6 +99,7 @@
 (define (makeLambda params body env)
     (list 'lambda params body env))
 
+
 ;; Function application
 (define (apply func args env)
     (let* ([funcVal (evalExpr func env)]
@@ -117,6 +117,8 @@
 (define (evalBinding func args)
     ('"Not defined yet"
 ))
+
+;TESTS ///////////////////////////////////////////////////////
 
 ;; Test arithmetic
 (print
@@ -147,10 +149,10 @@
       ;          (* x (fact (= x 1)))))))
       ;          (fact 10))))
 
-;; Test lambda eRIK'S TEST
-(print
-   (startEval
-    '(
-       (lambda (x y) (+ x y)) 10 20))
-       )
+; Test lambda eRIK'S TEST
+;(print
+   ;(startEval
+   ;'(
+     ; (lambda (x y) (+ x y)) 10 20))
+     ;  )
     
