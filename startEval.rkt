@@ -117,28 +117,31 @@
 (define (evalBinding func args)
     ('"Not defined yet"
 ))
+<<<<<<< HEAD
 
 ;TESTS ///////////////////////////////////////////////////////
+=======
+>>>>>>> 8c6830f1fdf23aa98f8498f9e77710437e4c9fd7
 
 ;; Test arithmetic
-(print
-    (startEval '(+ 1 2))
-)
+;(print
+;    (startEval '(+ 1 2))
+;)
 
 ;; Test relational
-(print
-    (startEval '(= 1 1))
-)
+;(print
+;    (startEval '(= 1 1))
+;)
 
 ;; Test lists
-(print
-    (startEval '(cons 1 '()))
-)
+;(print
+;    (startEval '(cons 1 '()))
+;)
 
 ;; Test if
-(print
-    (startEval '(if (equal? 1 1) 1 2))
-)
+;(print
+;    (startEval '(if (equal? 1 1) 1 2))
+;)
 
 ;; Test lambda
 ;(print
@@ -149,6 +152,7 @@
       ;          (* x (fact (= x 1)))))))
       ;          (fact 10))))
 
+<<<<<<< HEAD
 ; Test lambda eRIK'S TEST
 ;(print
    ;(startEval
@@ -156,3 +160,11 @@
      ; (lambda (x y) (+ x y)) 10 20))
      ;  )
     
+=======
+;; Test lambda eRIK'S TEST
+(print
+   (startEval
+    '(
+       (lambda (x y) (+ x y)) 10 20))
+       )
+>>>>>>> 8c6830f1fdf23aa98f8498f9e77710437e4c9fd7
