@@ -67,7 +67,7 @@
       )
   )
 )
-;TEST RESULTS OF addToEnv
+;TEST VALUES OF addToEnv
   ;(addToEnv '() '(x 3))
   ;(addToEnv '((x 3)) '(y 4))
   ;(addToEnv '((x 3) (z 5)) '((y 4) (w 6)))
