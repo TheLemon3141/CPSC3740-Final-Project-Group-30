@@ -148,13 +148,12 @@
 ;; letrec helper, not working
 (define (letrecHelper val env body)
         (evalExpr body (recHelper val val)))
-    ;;
-    ;(let ([evaluatedBindings (map (lambda (binding)
-    ;    (cons (first binding) (evalExpr (second binding) newEnv))) val)])
-    ;(let ([finalEnv (append evaluatedBindings env)])
-    ;    (evalExpr body finalEnv)))))
 
-(define (recHelper val newEnv)   ;newEnv will be a list of name-value pairs
+; Turns an environment (list of name-value pairs) with recursive definitions
+; into defined-- for example, '((x 5) (y x)) becomes '((x 5) (y 5))
+; val-- the original list of pairs
+; newEnv-- the same list, recursively rebuilt to define recursive defitions
+(define (recHelper val newEnv)   
   ;If it's () return it
   ;If it's not, proceed on it and return recHelper on cons
   (if (equal? newEnv '())
@@ -162,11 +161,11 @@
       (if (number? (second (car newEnv)))
           (cons (car newEnv) (recHelper val (cdr newEnv)))
           ;cons car (unchanged) with rechelper cdr
-        (letrec ([fixedPair
+        (letrec ([fixedPair ;Turns (y, x) into (y, 5) if x is defined as 5
                (list
                   (first (car newEnv))
                   (second(assoc (second (car newEnv)) val)))]
-              [fixedList
+              [fixedList ;Appends fixedPair to the front of val
                (append (list fixedPair) val)]
                );The let part should be good
         (cons
@@ -178,17 +177,10 @@
             ;)
            )
           ))
-          
           ;Look up the val in the table and cons it with recHelper cdr
       )
   )
 )
-
-
-;(recHelper val newEnv)
-;(recHelper '((x 2)) '((x 'placeholder)))
-;(recHelper '((x 2)) '([x 5] [y x]))
-;(recHelper '([x 5] [y x] [z y]) '([x 5] [y x] [z y]))
 
 ;; Test arithmetic
 (startEval '(+ 1 2))
