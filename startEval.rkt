@@ -162,17 +162,18 @@
       (if (number? (second (car newEnv)))
           (cons (car newEnv) (recHelper val (cdr newEnv)))
           ;cons car (unchanged) with rechelper cdr
-        (let ([fixedPair
+        (letrec ([fixedPair
                (list
                   (first (car newEnv))
                   (second(assoc (second (car newEnv)) val)))]
+              [fixedList
+               (append (list fixedPair) val)]
                );The let part should be good
         (cons
-           (append (list fixedPair) val)
+           fixedList
            ;(append (list val) fixedPair)
            (recHelper
-            val
-            ;(append (list fixedPair) val)
+            fixedList
             (cdr newEnv)
             ;)
            )
@@ -181,7 +182,7 @@
           ;Look up the val in the table and cons it with recHelper cdr
       )
   )
-
+)
 
 
 ;(recHelper val newEnv)
