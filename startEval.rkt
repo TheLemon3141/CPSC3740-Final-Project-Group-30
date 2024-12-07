@@ -147,15 +147,47 @@
 
 ;; letrec helper, not working
 (define (letrecHelper val env body)
-    (let* ([newEnv (append (map (lambda (binding)
-        (cons (first binding) 'placeholder)) val) env)])
-        (evalExpr body newEnv)))
+        (evalExpr body (recHelper val val)))
     ;;
     ;(let ([evaluatedBindings (map (lambda (binding)
     ;    (cons (first binding) (evalExpr (second binding) newEnv))) val)])
     ;(let ([finalEnv (append evaluatedBindings env)])
     ;    (evalExpr body finalEnv)))))
 
+(define (recHelper val newEnv)   ;newEnv will be a list of name-value pairs
+  ;If it's () return it
+  ;If it's not, proceed on it and return recHelper on cons
+  (if (equal? newEnv '())
+      '()
+      (if (number? (second (car newEnv)))
+          (cons (car newEnv) (recHelper val (cdr newEnv)))
+          ;cons car (unchanged) with rechelper cdr
+        (let ([fixedPair
+               (list
+                  (first (car newEnv))
+                  (second(assoc (second (car newEnv)) val)))]
+               );The let part should be good
+        (cons
+           (append (list fixedPair) val)
+           ;(append (list val) fixedPair)
+           (recHelper
+            val
+            ;(append (list fixedPair) val)
+            (cdr newEnv)
+            ;)
+           )
+          ))
+          
+          ;Look up the val in the table and cons it with recHelper cdr
+      )
+  )
+
+
+
+;(recHelper val newEnv)
+;(recHelper '((x 2)) '((x 'placeholder)))
+;(recHelper '((x 2)) '([x 5] [y x]))
+;(recHelper '([x 5] [y x] [z y]) '([x 5] [y x] [z y]))
 
 ;; Test arithmetic
 (startEval '(+ 1 2))
@@ -196,7 +228,7 @@
             [y x])
         (+ x y))))
 
-;; Test letrec, not working
+;;Test letrec, not working
 (startEval '(letrec ([x 5] [y x]) (+ x y)))
 
 ;(define test '((lambda (x y) (+ x y)) 10 20))
